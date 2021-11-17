@@ -2,20 +2,25 @@ package com.ist412.efinance.controller;
 
 
 import com.ist412.efinance.model.User;
+import com.ist412.efinance.repository.UserRepository;
 import com.ist412.efinance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -47,5 +52,22 @@ public class UserController {
 
     }
 
+
+    @GetMapping("/showFormForUpdate/{uid}")
+    public String showFormForUpdate(@PathVariable("uid") long uid, Model model){
+        User user = userService.getUserById(uid);
+        model.addAttribute("user", user);
+        //model.getAttribute(user.getUid().toString());
+
+        return "update_user";
+    }
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        List<User> listUsers = userService.getAllUsers();
+        model.addAttribute("listUsers", listUsers);
+
+        return "index";
+    }
 
 }

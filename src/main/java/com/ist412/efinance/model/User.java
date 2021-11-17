@@ -45,6 +45,8 @@ public class User implements Serializable {
 
     }
 
+    // Getters and Setters
+
 
     public Long getUid() {
         return uid;

@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -32,6 +33,26 @@ public class UserServiceImpl implements UserService{
 
         //save user to repository
         this.userRepository.save(user);
+//        this.userRepository.findById(user.getUid());
 
     }
+
+    @Override
+    public User getUserById(long uid) {
+        Optional<User> optional = userRepository.findById(uid);
+        User user = null;
+        if (optional.isPresent()){
+            user = optional.get();
+
+
+        } else {
+            throw new RuntimeException("User not found for id :: " + uid);
+        }
+
+        return user;
+    }
+
+
+
+
 }

@@ -26,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .dataSource(dataSource)
 
+
                 // authenticate hashed passwords
                 .passwordEncoder(passwordEncoder())
 
@@ -33,7 +34,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?")
                 .authoritiesByUsernameQuery("SELECT username, 'ROLE_USER' FROM users WHERE username=?");
 
+
+
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -49,7 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()
+
                 .logout().permitAll();
+
+
 
     }
 
