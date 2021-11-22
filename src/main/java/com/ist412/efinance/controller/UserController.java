@@ -22,6 +22,8 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    // autowired -
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
