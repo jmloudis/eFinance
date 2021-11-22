@@ -22,15 +22,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    // autowired -
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
     @GetMapping("/login")
     public String login(){
         return "login";
-
     }
 
     @GetMapping("/home")
