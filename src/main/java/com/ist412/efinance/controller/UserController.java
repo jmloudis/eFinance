@@ -54,15 +54,14 @@ public class UserController {
         User user = userService.getUserById(uid);
         model.addAttribute("user", user);
         //model.getAttribute(user.getUid().toString());
-
         return "update_user";
+
     }
 
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> listUsers = userService.getAllUsers();
         model.addAttribute("listUsers", listUsers);
-
         return "index";
     }
 
