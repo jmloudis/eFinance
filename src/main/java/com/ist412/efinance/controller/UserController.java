@@ -38,14 +38,12 @@ public class UserController {
         User user = new User();
         model.addAttribute("user", user);
         return "registration";
-
     }
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user){
         userService.saveUser(user);
         return "redirect:/";
-
     }
 
 
@@ -55,7 +53,6 @@ public class UserController {
         model.addAttribute("user", user);
         //model.getAttribute(user.getUid().toString());
         return "update_user";
-
     }
 
     @GetMapping("/users")
