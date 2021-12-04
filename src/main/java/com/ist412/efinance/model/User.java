@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,10 +56,20 @@ public class User implements Serializable {
     private String password;
 
     @Column(name = "role", length = 25)
-    private String role = "ROLE_USER";
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     @Column(name = "enabled")
     private boolean enabled; // = true;
+
+    @Column(name = "token_expired")
+    private boolean tokenExpired;
 
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "applicant", orphanRemoval = true)
@@ -89,8 +100,7 @@ public class User implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
-                ", username= '" + username + '\'' +
-                ", role= '" + role + '\'' +
+                ", username= '" + username +
                 '}';
     }
 }
