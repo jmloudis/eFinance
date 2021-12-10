@@ -47,26 +47,56 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
+        
+        // CREATE TWO ADMIN ROLES IN MEMORY FOR LOAN PROCESSING
+         auth.inMemoryAuthentication()
+                .withUser("ATZ")
+                .password(passwordEncoder().encode("atz"))
+                .roles(ADMIN)
+                .and()
+                .withUser("atz_admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles(ADMIN);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/userHome","/static/**", "/loans","/logout", "/newAutoLoan",
-                        "/newBusinessLoan", "/newPersonalLoan","/saveAutoLoan", "/account").hasRole(USER)
-                .antMatchers("/","/static/**", "/saveUser", "/showNewUserForm",
+                .antMatchers("/userHome","/resources/**", "/loans","/logout", "/newAutoLoan",
+                        "/newBusinessLoan", "/newPersonalLoan","/saveAutoLoan").hasRole(USER)
+                .antMatchers("/","/resources/**", "/img/**", "/saveUser", "/showNewUserForm",
                          "/about", "/contact").permitAll()
                 .anyRequest()
-                .permitAll()
+                .authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
+                    .loginPage("/login.html").loginProcessingUrl("/login")
                     .defaultSuccessUrl("/userHome", true)
                     .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/logout").permitAll();
+                .logout().logoutUrl("/logout").permitAll();
 
+//          Setting up permission possibilities
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/anonymous*").anonymous()
+//                .antMatchers("/login*").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login.html")
+//                .loginProcessingUrl("/perform_login")
+//                .defaultSuccessUrl("/user-home.html", true)
+//                .failureUrl("/login.html?error=true")
+//                .failureHandler(authenticationFailureHandler())
+//                .and()
+//                .logout()
+//                .logoutUrl("/perform_logout")
+//                .deleteCookies("JSESSIONID")
+//                .logoutSuccessHandler(logoutSuccessHandler());
     }
 
 
